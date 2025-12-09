@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment | SkillUprise Pro</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/payment.css">
+    
+    <!-- RazorPay -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>SkillUprise <strong>Pro</strong></span>
+                </a>
+                
+                <div class="nav-menu">
+                    <ul class="nav-links">
+                        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="tests.html"><i class="fas fa-list-alt"></i> Tests</a></li>
+                        <li><a href="contact.html"><i class="fas fa-headset"></i> Support</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Payment Container -->
+    <main class="payment-container">
+        <div class="container">
+            <!-- Payment Header -->
+            <div class="payment-header">
+                <div class="payment-step active">
+                    <div class="step-number">1</div>
+                    <div class="step-text">
+                        <span>Test Completed</span>
+                        <small>You scored well!</small>
+                    </div>
+                </div>
+                
+                <div class="step-arrow">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                
+                <div class="payment-step active">
+                    <div class="step-number">2</div>
+                    <div class="step-text">
+                        <span>Payment</span>
+                        <small>Unlock certificate</small>
+                    </div>
+                </div>
+                
+                <div class="step-arrow">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                
+                <div class="payment-step">
+                    <div class="step-number">3</div>
+                    <div class="step-text">
+                        <span>Certificate</span>
+                        <small>Get certified</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Content -->
+            <div class="payment-content">
+                <!-- Order Summary -->
+                <div class="order-summary">
+                    <div class="summary-header">
+                        <h3><i class="fas fa-receipt"></i> Order Summary</h3>
+                    </div>
+                    
+                    <div class="test-info">
+                        <div class="test-icon">
+                            <i class="fas fa-code" id="testIcon"></i>
+                        </div>
+                        <div class="test-details">
+                            <h4 id="testName">Python Programming Test</h4>
+                            <div class="test-meta">
+                                <span class="level-badge" id="testLevel">Beginner Level</span>
+                                <span class="score-badge" id="testScore">Score: 80%</span>
+                            </div>
+                            <p class="test-desc" id="testDescription">Professional skill assessment certificate</p>
+                        </div>
+                    </div>
+                    
+                    <div class="price-breakdown">
+                        <div class="price-row">
+                            <span>Test Fee</span>
+                            <span id="testPrice">₹7</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Certificate Fee</span>
+                            <span>₹0</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Platform Fee</span>
+                            <span>₹0</span>
+                        </div>
+                        <div class="price-row total">
+                            <strong>Total Amount</strong>
+                            <strong id="totalAmount">₹7</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="benefits">
+                        <h5><i class="fas fa-gift"></i> What You Get:</h5>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Professional Certificate</li>
+                            <li><i class="fas fa-check-circle"></i> Digital Badge</li>
+                            <li><i class="fas fa-check-circle"></i> LinkedIn Shareable</li>
+                            <li><i class="fas fa-check-circle"></i> Email Delivery</li>
+                            <li><i class="fas fa-check-circle"></i> Lifetime Access</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Payment Form -->
+                <div class="payment-form">
+                    <div class="form-header">
+                        <h3><i class="fas fa-credit-card"></i> Payment Details</h3>
+                        <p>Complete payment to unlock your certificate</p>
+                    </div>
+                    
+                    <!-- User Details -->
+                    <div class="user-details">
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i> Your Name</label>
+                            <input type="text" id="userName" placeholder="Enter your full name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> Email Address</label>
+                            <input type="email" id="userEmail" placeholder="Enter your email" required>
+                            <small>Certificate will be sent to this email</small>
+                        </div>
+                    </div>
+                    
+                    <!-- Payment Method -->
+                    <div class="payment-method">
+                        <h4><i class="fas fa-wallet"></i> Select Payment Method</h4>
+                        
+                        <div class="method-options">
+                            <div class="method-card active" id="razorpayMethod">
+                                <div class="method-icon">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <div class="method-info">
+                                    <h5>Razorpay</h5>
+                                    <p>Pay with UPI, Cards, NetBanking</p>
+                                </div>
+                                <div class="method-check">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="method-card">
+                                <div class="method-icon">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                                <div class="method-info">
+                                    <h5>Bank Transfer</h5>
+                                    <p>NEFT/RTGS/IMPS</p>
+                                </div>
+                                <div class="method-check">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Razorpay Info -->
+                        <div class="razorpay-info" id="razorpayInfo">
+                            <div class="info-header">
+                                <i class="fas fa-shield-alt"></i>
+                                <h5>Secure Payment by Razorpay</h5>
+                            </div>
+                            <div class="info-content">
+                                <p>Your payment is secured with 128-bit SSL encryption. Razorpay is a PCI DSS Level 1 compliant payment gateway trusted by 5+ million businesses.</p>
+                                <div class="trust-badges">
+                                    <img src="https://razorpay.com/assets/razorpay-logo.svg" alt="Razorpay" height="20">
+                                    <span class="badge">PCI DSS</span>
+                                    <span class="badge">SSL Secure</span>
+                                    <span class="badge">₹10 Cr Insurance</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Terms -->
+                    <div class="terms-section">
+                        <div class="terms-check">
+                            <input type="checkbox" id="acceptTerms" required>
+                            <label for="acceptTerms">
+                                I agree to the <a href="policies.html#terms" target="_blank">Terms & Conditions</a> and 
+                                <a href="policies.html#privacy" target="_blank">Privacy Policy</a>. I understand that the certificate will be emailed to me within 24 hours of successful payment.
+                            </label>
+                        </div>
+                        
+                        <div class="refund-info">
+                            <i class="fas fa-info-circle"></i>
+                            <span>7-day refund policy if certificate not delivered</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Payment Button -->
+                    <div class="payment-actions">
+                        <button id="backToTest" class="btn btn-outline">
+                            <i class="fas fa-arrow-left"></i> Back to Tests
+                        </button>
+                        <button id="payNowBtn" class="btn btn-primary">
+                            <i class="fas fa-lock"></i> Pay Now
+                        </button>
+                    </div>
+                    
+                    <!-- Support Info -->
+                    <div class="support-info">
+                        <div class="support-item">
+                            <i class="fas fa-headset"></i>
+                            <div>
+                                <strong>Need Help?</strong>
+                                <span>Contact: support@skilluprise.online</span>
+                            </div>
+                        </div>
+                        <div class="support-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <div>
+                                <strong>100% Secure</strong>
+                                <span>Your payment is protected</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <h3>Processing Payment</h3>
+            <p>Please don't close this window</p>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content success-modal">
+            <div class="modal-header">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Payment Successful!</h3>
+            </div>
+            
+            <div class="modal-body">
+                <div class="success-message">
+                    <h4><i class="fas fa-trophy"></i> Congratulations!</h4>
+                    <p>Your payment for <strong id="successTestName">Python Programming Test</strong> has been successfully processed.</p>
+                    
+                    <div class="success-details">
+                        <div class="detail-item">
+                            <i class="fas fa-certificate"></i>
+                            <div>
+                                <strong>Certificate Status</strong>
+                                <span>Will be emailed within 24 hours</span>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <strong>Sent to Email</strong>
+                                <span id="successEmail">user@example.com</span>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <i class="fas fa-download"></i>
+                            <div>
+                                <strong>Download Link</strong>
+                                <span>Check your email for download instructions</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="whats-next">
+                        <h5><i class="fas fa-forward"></i> What's Next?</h5>
+                        <ul>
+                            <li>Check your email (including spam folder)</li>
+                            <li>Download your professional certificate</li>
+                            <li>Share on LinkedIn to showcase your achievement</li>
+                            <li>Take more tests to build your skill portfolio</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button id="goHomeBtn" class="btn btn-outline">
+                    <i class="fas fa-home"></i> Back to Home
+                </button>
+                <button id="viewTestsBtn" class="btn btn-primary">
+                    <i class="fas fa-list-alt"></i> View More Tests
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>SkillUprise <strong>Pro</strong></span>
+                    </div>
+                    <p>Professional skill certification platform</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <a href="contact.html">Contact Us</a>
+                    <a href="policies.html#refund">Refund Policy</a>
+                    <a href="policies.html#terms">Terms</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 SkillUprise Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // RazorPay Configuration
+        const RAZORPAY_KEY_ID = 'rzp_live_RUUe8oTGD3QlA3';
+        
+        // Test data mapping - Prices: ₹7, ₹14, ₹19
+        const testData = {
+            python: { 
+                name: 'Python Programming', 
+                icon: 'fa-code',
+                beginner: { price: 7, questions: 10 },
+                intermediate: { price: 14, questions: 20 },
+                pro: { price: 19, questions: 30 }
+            },
+            javascript: { 
+                name: 'JavaScript Fundamentals', 
+                icon: 'fa-js',
+                beginner: { price: 7, questions: 10 },
+                intermediate: { price: 14, questions: 20 },
+                pro: { price: 19, questions: 30 }
+            },
+            web: { 
+                name: 'Web Development', 
+                icon: 'fa-globe',
+                beginner: { price: 7, questions: 10 },
+                intermediate: { price: 14, questions: 20 },
+                pro: { price: 19, questions: 30 }
+            },
+            data: { 
+                name: 'Data Science & AI', 
+                icon: 'fa-database',
+                beginner: { price: 7, questions: 10 },
+                intermediate: { price: 14, questions: 20 },
+                pro: { price: 19, questions: 30 }
+            },
+            cloud: { 
+                name: 'Cloud Computing', 
+                icon: 'fa-cloud',
+                beginner: { price: 7, questions: 10 },
+                intermediate: { price: 14, questions: 20 },
+                pro: { price: 19, questions: 30 }
+            },
+            security: { 
+                name: 'Cybersecurity', 
+                icon: 'fa-shield-alt',
+                beginner: { price: 7, questions: 10 },
+                intermediate: { price: 14, questions: 20 },
+                pro: { price: 19, questions: 30 }
+            }
+        };
+
+        // State
+        let paymentState = {
+            testId: null,
+            level: null,
+            score: null,
+            correct: null,
+            total: null,
+            price: null,
+            userName: '',
+            userEmail: ''
+        };
+
+        // DOM Elements
+        const testName = document.getElementById('testName');
+        const testLevel = document.getElementById('testLevel');
+        const testScore = document.getElementById('testScore');
+        const testIcon = document.getElementById('testIcon');
+        const testPrice = document.getElementById('testPrice');
+        const totalAmount = document.getElementById('totalAmount');
+        const userName = document.getElementById('userName');
+        const userEmail = document.getElementById('userEmail');
+        const payNowBtn = document.getElementById('payNowBtn');
+        const backToTest = document.getElementById('backToTest');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const successModal = document.getElementById('successModal');
+        const successTestName = document.getElementById('successTestName');
+        const successEmail = document.getElementById('successEmail');
+        const goHomeBtn = document.getElementById('goHomeBtn');
+        const viewTestsBtn = document.getElementById('viewTestsBtn');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get parameters from URL
+            const params = new URLSearchParams(window.location.search);
+            paymentState.testId = params.get('test') || 'python';
+            paymentState.level = params.get('level') || 'beginner';
+            paymentState.score = parseInt(params.get('score')) || 80;
+            paymentState.correct = parseInt(params.get('correct')) || 8;
+            paymentState.total = parseInt(params.get('total')) || 10;
+            
+            // Validate
+            if (!paymentState.testId || !paymentState.level) {
+                window.location.href = 'tests.html';
+                return;
+            }
+            
+            // Setup payment page
+            setupPaymentPage();
+            setupEventListeners();
+            
+            // Try to prefill user data
+            prefillUserData();
+        });
+
+        function setupPaymentPage() {
+            // Get test details
+            const testInfo = testData[paymentState.testId] || testData.python;
+            const levelInfo = testInfo[paymentState.level];
+            
+            // Update price from test data
+            paymentState.price = levelInfo.price;
+            
+            // Update UI
+            testName.textContent = `${testInfo.name} - ${paymentState.level.charAt(0).toUpperCase() + paymentState.level.slice(1)} Level`;
+            testLevel.textContent = `${paymentState.level.charAt(0).toUpperCase() + paymentState.level.slice(1)} Level`;
+            testScore.textContent = `Score: ${paymentState.score}%`;
+            testIcon.className = `fas ${testInfo.icon}`;
+            
+            // Update amounts - No GST calculation
+            testPrice.textContent = `₹${paymentState.price}`;
+            totalAmount.textContent = `₹${paymentState.price}`;
+            
+            // Update payment state
+            paymentState.total = paymentState.price;
+        }
+
+        function prefillUserData() {
+            // Try to get from localStorage
+            const savedName = localStorage.getItem('userName');
+            const savedEmail = localStorage.getItem('userEmail');
+            
+            if (savedName) {
+                userName.value = savedName;
+                paymentState.userName = savedName;
+            }
+            
+            if (savedEmail) {
+                userEmail.value = savedEmail;
+                paymentState.userEmail = savedEmail;
+            }
+        }
+
+        function setupEventListeners() {
+            // Input changes
+            userName.addEventListener('input', (e) => {
+                paymentState.userName = e.target.value.trim();
+            });
+            
+            userEmail.addEventListener('input', (e) => {
+                paymentState.userEmail = e.target.value.trim();
+            });
+            
+            // Payment method selection
+            document.querySelectorAll('.method-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    document.querySelectorAll('.method-card').forEach(c => {
+                        c.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+            
+            // Pay Now button
+            payNowBtn.addEventListener('click', processPayment);
+            
+            // Back button
+            backToTest.addEventListener('click', () => {
+                window.location.href = 'tests.html';
+            });
+            
+            // Success modal buttons
+            goHomeBtn.addEventListener('click', () => {
+                window.location.href = 'index.html';
+            });
+            
+            viewTestsBtn.addEventListener('click', () => {
+                window.location.href = 'tests.html';
+            });
+        }
+
+        function validateForm() {
+            // Check terms
+            if (!document.getElementById('acceptTerms').checked) {
+                showError('Please accept the terms and conditions');
+                return false;
+            }
+            
+            // Validate name
+            if (!paymentState.userName || paymentState.userName.length < 2) {
+                showError('Please enter your full name');
+                userName.focus();
+                return false;
+            }
+            
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!paymentState.userEmail || !emailRegex.test(paymentState.userEmail)) {
+                showError('Please enter a valid email address');
+                userEmail.focus();
+                return false;
+            }
+            
+            return true;
+        }
+
+        function processPayment() {
+            if (!validateForm()) return;
+            
+            // Show loading
+            loadingOverlay.classList.add('show');
+            
+            // Save user data
+            localStorage.setItem('userName', paymentState.userName);
+            localStorage.setItem('userEmail', paymentState.userEmail);
+            
+            // Create RazorPay order
+            createRazorpayOrder();
+        }
+
+        function createRazorpayOrder() {
+            const testInfo = testData[paymentState.testId] || testData.python;
+            const testFullName = `${testInfo.name} - ${paymentState.level.charAt(0).toUpperCase() + paymentState.level.slice(1)} Level`;
+            
+            const options = {
+                key: RAZORPAY_KEY_ID,
+                amount: Math.round(paymentState.total * 100), // Convert to paise
+                currency: "INR",
+                name: "SkillUprise Pro",
+                description: testFullName,
+                image: "https://skilluprise.online/favicon.png",
+                handler: function(response) {
+                    // Payment successful
+                    handlePaymentSuccess(response);
+                },
+                prefill: {
+                    name: paymentState.userName,
+                    email: paymentState.userEmail,
+                    contact: "" // Optional: Add phone if available
+                },
+                notes: {
+                    test: testFullName,
+                    name: paymentState.userName,
+                    email: paymentState.userEmail,
+                    score: paymentState.score + '%',
+                    level: paymentState.level,
+                    test_id: paymentState.testId,
+                    correct: paymentState.correct,
+                    total: paymentState.total
+                },
+                theme: {
+                    color: "#3b82f6"
+                },
+                modal: {
+                    ondismiss: function() {
+                        // Payment modal closed
+                        loadingOverlay.classList.remove('show');
+                    }
+                }
+            };
+            
+            const rzp = new Razorpay(options);
+            rzp.open();
+            
+            // Handle payment errors
+            rzp.on('payment.failed', function(response) {
+                handlePaymentError(response);
+            });
+        }
+
+        function handlePaymentSuccess(response) {
+            // Hide loading
+            loadingOverlay.classList.remove('show');
+            
+            // Save payment record
+            savePaymentRecord(response);
+            
+            // Show success message
+            showSuccessMessage();
+            
+            // Send certificate email
+            sendCertificateEmail();
+        }
+
+        function handlePaymentError(response) {
+            loadingOverlay.classList.remove('show');
+            
+            showError(`Payment failed: ${response.error.description || 'Please try again'}`);
+            
+            // Log error for debugging
+            console.error('Payment failed:', response);
+        }
+
+        function savePaymentRecord(response) {
+            const paymentRecord = {
+                ...paymentState,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature,
+                timestamp: new Date().toISOString(),
+                status: 'completed'
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('lastPayment', JSON.stringify(paymentRecord));
+            
+            // Add to payment history
+            let paymentHistory = JSON.parse(localStorage.getItem('paymentHistory') || '[]');
+            paymentHistory.push(paymentRecord);
+            localStorage.setItem('paymentHistory', JSON.stringify(paymentHistory));
+            
+            // Send to backend (in production)
+            sendToBackend(paymentRecord);
+        }
+
+        function sendToBackend(paymentRecord) {
+            // In production, send to your backend API
+            fetch('/api/save-payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(paymentRecord)
+            }).catch(error => {
+                console.error('Error saving payment:', error);
+            });
+        }
+
+        function sendCertificateEmail() {
+            const testInfo = testData[paymentState.testId] || testData.python;
+            const testFullName = `${testInfo.name} - ${paymentState.level.charAt(0).toUpperCase() + paymentState.level.slice(1)} Level`;
+            
+            // Prepare email data
+            const emailData = {
+                to: paymentState.userEmail,
+                subject: `Your ${testFullName} Certificate`,
+                testName: testFullName,
+                userName: paymentState.userName,
+                score: paymentState.score,
+                level: paymentState.level,
+                date: new Date().toLocaleDateString('en-IN')
+            };
+            
+            // Send email (in production, this would be a backend API call)
+            fetch('/api/send-certificate-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(emailData)
+            }).catch(error => {
+                console.error('Error sending email:', error);
+            });
+        }
+
+        function showSuccessMessage() {
+            const testInfo = testData[paymentState.testId] || testData.python;
+            const testFullName = `${testInfo.name} - ${paymentState.level.charAt(0).toUpperCase() + paymentState.level.slice(1)} Level`;
+            
+            // Update modal content
+            successTestName.textContent = testFullName;
+            successEmail.textContent = paymentState.userEmail;
+            
+            // Show modal
+            successModal.classList.add('show');
+            
+            // Auto-hide after 30 seconds
+            setTimeout(() => {
+                if (successModal.classList.contains('show')) {
+                    window.location.href = 'index.html';
+                }
+            }, 30000);
+        }
+
+        function showError(message) {
+            // Create error toast
+            const toast = document.createElement('div');
+            toast.className = 'error-toast';
+            toast.innerHTML = `
+                <i class="fas fa-exclamation-circle"></i>
+                <span>${message}</span>
+            `;
+            
+            // Add to body
+            document.body.appendChild(toast);
+            
+            // Show with animation
+            setTimeout(() => toast.classList.add('show'), 10);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
+
+        // Error toast styles (add to CSS)
+        const style = document.createElement('style');
+        style.textContent = `
+            .error-toast {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #ef4444;
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+                z-index: 10000;
+                transform: translateX(150%);
+                transition: transform 0.3s ease;
+            }
+            
+            .error-toast.show {
+                transform: translateX(0);
+            }
+            
+            .error-toast i {
+                font-size: 1.2rem;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
