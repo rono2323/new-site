@@ -303,7 +303,7 @@
     <script>
         // Configuration
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwg8obk8BF_5XMUAlMV3u6kAJmWuRpdMUfY0810p3SokqlwDk2cbmVFZ2YuSRVWvweSIw/exec';
-        const RAZORPAY_KEY = 'rzp_test_x5g5F1m5rGl4l6'; // Replace with your key
+        const RAZORPAY_KEY = 'rzp_live_RUUe8oTGD3QlA3'; // Replace with your key
 
         // Course Data
         const courseData = {
@@ -761,4 +761,202 @@
             showLoading();
             
             try {
-                const response = await callGoogleScript('complete
+                const response = await callGoogleScript('completeCourse', {
+                    userId: currentUser.userId,
+                    courseId: courseData.id
+                });
+                
+                const mainContent = document.getElementById('mainContent');
+                mainContent.innerHTML = `
+                    <div class="course-card" style="text-align: center;">
+                        <h1 style="color: #28a745;">🎉 Course Completed!</h1>
+                        <p style="font-size: 18px; margin: 20px 0;">
+                            Congratulations on completing ${courseData.title}!
+                        </p>
+                        <p style="color: #666; margin: 20px 0;">
+                            ✅ Our experts will review your submitted tasks.<br>
+                            ✅ Your certificate will be emailed to you along with performance report.
+                        </p>
+                        <button class="btn" onclick="loadHomePage()" style="margin: 20px;">
+                            Back to Course
+                        </button>
+                    </div>
+                `;
+                
+                if (response.success) {
+                    showMessage('Course marked as completed!', 'success');
+                }
+            } catch (error) {
+                console.error('Complete course error:', error);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // View Progress
+        async function viewProgress() {
+            showLoading();
+            
+            try {
+                const response = await callGoogleScript('getProgress', {
+                    userId: currentUser.userId,
+                    courseId: courseData.id
+                });
+                
+                const progress = response.success ? response.progress || [] : [];
+                const completed = response.chaptersCompleted || 0;
+                const total = courseData.chapters;
+                const percentage = (completed / total) * 100;
+                
+                const mainContent = document.getElementById('mainContent');
+                mainContent.innerHTML = `
+                    <div class="course-card">
+                        <h2>Your Progress</h2>
+                        <p>Course: ${courseData.title}</p>
+                        
+                        <div class="progress-container">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>Progress: ${completed}/${total} chapters</span>
+                                <span>${Math.round(percentage)}%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${percentage}%"></div>
+                            </div>
+                        </div>
+                        
+                        ${progress.length > 0 ? `
+                            <h3 style="margin-top: 30px;">Chapter Submissions:</h3>
+                            ${progress.map(p => `
+                                <div style="background: #f8f9fa; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                                    <strong>Chapter ${p.chapterId}</strong><br>
+                                    Submitted: ${new Date(p.submittedAt).toLocaleDateString()}<br>
+                                    MCQ Answer: ${p.mcqResult}
+                                </div>
+                            `).join('')}
+                        ` : '<p>No submissions yet.</p>'}
+                        
+                        <div style="margin-top: 20px; text-align: center;">
+                            <button class="btn" onclick="startCourse()">Continue Learning</button>
+                            <button class="btn" onclick="loadHomePage()" style="margin-left: 10px;">Back</button>
+                        </div>
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('Progress view error:', error);
+                showMessage('Failed to load progress', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Login Handler
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                showMessage('Please fill in all fields', 'error');
+                return;
+            }
+            
+            showLoading();
+            
+            try {
+                const response = await callGoogleScript('login', {
+                    email: email,
+                    password: password
+                });
+                
+                if (response.success) {
+                    currentUser = response.user;
+                    localStorage.setItem('skilluprise_user', JSON.stringify(currentUser));
+                    
+                    updateUserUI();
+                    hideModal('loginModal');
+                    showMessage('Login successful!', 'success');
+                    
+                    // Update course actions
+                    updateCourseActions();
+                } else {
+                    showMessage(response.message, 'error');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showMessage('Login failed. Please try again.', 'error');
+            } finally {
+                hideLoading();
+            }
+        });
+
+        // Signup Handler
+        document.getElementById('signupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            
+            if (!name || !email || !password) {
+                showMessage('Please fill in all fields', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showMessage('Password must be at least 6 characters', 'error');
+                return;
+            }
+            
+            showLoading();
+            
+            try {
+                const response = await callGoogleScript('signup', {
+                    name: name,
+                    email: email,
+                    password: password
+                });
+                
+                if (response.success) {
+                    currentUser = response.user;
+                    localStorage.setItem('skilluprise_user', JSON.stringify(currentUser));
+                    
+                    updateUserUI();
+                    hideModal('signupModal');
+                    showMessage('Account created successfully!', 'success');
+                    
+                    // Update course actions
+                    updateCourseActions();
+                } else {
+                    showMessage(response.message, 'error');
+                }
+            } catch (error) {
+                console.error('Signup error:', error);
+                showMessage('Signup failed. Please try again.', 'error');
+            } finally {
+                hideLoading();
+            }
+        });
+
+        // Logout
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('skilluprise_user');
+            updateUserUI();
+            updateCourseActions();
+            showMessage('Logged out successfully', 'success');
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', init);
+        
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
