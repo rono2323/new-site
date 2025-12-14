@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Development Fundamentals - CodeMaster</title>
+    <script src="course.js"></script>
+    <script>
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxRqeuQLas7nB5iMmMZJnMxo9Js_cYUD4DIHHEDh9G2KJzyISFt9GbwSAYbYTE2i4Iz/exec';
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f8fafc;
+            color: #334155;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #4f46e5;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 0.6rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #4f46e5;
+            border: 2px solid #4f46e5;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            height: fit-content;
+            position: sticky;
+            top: 80px;
+        }
+
+        .progress-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(#4f46e5 0% 0%, #e2e8f0 0% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            position: relative;
+        }
+
+        .progress-inner {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4f46e5;
+        }
+
+        .chapters-list {
+            margin-top: 1.5rem;
+        }
+
+        .chapter-item {
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .chapter-item:hover {
+            background: #f8fafc;
+        }
+
+        .chapter-item.active {
+            background: #f1f5f9;
+            border-left: 4px solid #4f46e5;
+        }
+
+        .chapter-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #4f46e5;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .chapter-item.completed .chapter-number {
+            background: #10b981;
+        }
+
+        /* Main Content */
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .chapter-header {
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chapter-title {
+            font-size: 2rem;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .chapter-content {
+            line-height: 1.8;
+            color: #475569;
+            margin-bottom: 2rem;
+        }
+
+        .chapter-content h3, .chapter-content h4 {
+            color: #1e293b;
+            margin: 1.5rem 0 1rem;
+        }
+
+        .chapter-content ul, .chapter-content ol {
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .chapter-content pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Task Section */
+        .task-section {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border-left: 4px solid #4f46e5;
+        }
+
+        .task-title {
+            color: #4f46e5;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .task-description {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #e2e8f0;
+            white-space: pre-line;
+            line-height: 1.6;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #475569;
+            font-weight: 500;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 150px;
+            transition: border 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #4f46e5;
+        }
+
+        .task-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-full {
+            flex: 1;
+        }
+
+        /* Completion Section */
+        .completion-section {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .completion-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Popup */
+        .popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 1.2rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+            animation: slideIn 0.3s ease;
+            border-left: 5px solid #10b981;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.9);
+            z-index: 3000;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #e2e8f0;
+            border-top: 5px solid #4f46e5;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            
+            .sidebar {
+                position: static;
+            }
+            
+            .task-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Spinner -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="courses.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            CodeMaster
+        </a>
+        <button class="btn btn-secondary" onclick="window.location.href='courses.html'">
+            <i class="fas fa-arrow-left"></i> Back to Courses
+        </button>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="progress-circle" id="progressCircle">
+                <div class="progress-inner" id="progressPercent">0%</div>
+            </div>
+            
+            <h3 style="text-align: center; margin-bottom: 1.5rem; color: #1e293b;">
+                Course Progress
+            </h3>
+            
+            <div class="chapters-list" id="chaptersList">
+                <!-- Chapters will be loaded here -->
+            </div>
+            
+            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0;">
+                <p><strong>Chapters Completed:</strong> <span id="completedCount">0</span>/5</p>
+                <p><strong>Tasks Submitted:</strong> <span id="tasksCount">0</span>/5</p>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div id="chapterContent">
+                <div class="chapter-header">
+                    <h1 class="chapter-title">Welcome to the Course!</h1>
+                    <p style="color: #64748b;">Select a chapter from the sidebar to begin learning.</p>
+                </div>
+                
+                <div class="chapter-content">
+                    <p>This course will guide you through the fundamentals of web development. Each chapter includes:</p>
+                    <ul>
+                        <li>Comprehensive learning materials</li>
+                        <li>Hands-on coding exercises</li>
+                        <li>Practical tasks to apply your knowledge</li>
+                        <li>Expert review and feedback</li>
+                    </ul>
+                    <p>Complete all chapters and tasks to earn your certificate!</p>
+                </div>
+            </div>
+
+            <!-- Task Section -->
+            <div class="task-section" id="taskSection" style="display: none;">
+                <h3 class="task-title" id="taskTitle">Chapter Task</h3>
+                <div class="task-description" id="taskDescription">
+                    <!-- Task description will be loaded here -->
+                </div>
+                
+                <form id="taskForm">
+                    <div class="input-group">
+                        <label>How would you solve this task? (Your Solution Plan)</label>
+                        <textarea id="solutionPlan" 
+                                  placeholder="Describe your approach, steps you'll take, tools you'll use..." 
+                                  required></textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>How did you actually perform the task? (Your Solution)</label>
+                        <textarea id="actualSolution" 
+                                  placeholder="Paste your code, describe your implementation, share screenshots or links..." 
+                                  required></textarea>
+                    </div>
+                    
+                    <div class="task-buttons">
+                        <button type="submit" class="btn btn-success btn-full">
+                            <i class="fas fa-paper-plane"></i> Submit Task
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-full" onclick="skipChapter()">
+                            <i class="fas fa-forward"></i> Skip for Now
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Completion Section -->
+            <div class="completion-section" id="completionSection">
+                <h2>🎉 Course Completed!</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 2rem;">
+                    Congratulations on completing all chapters and tasks!
+                </p>
+                <p style="margin-bottom: 2rem;">
+                    Our experts will review your submitted tasks and assign marks. 
+                    Your certificate will be sent to your email once all tasks are reviewed.
+                </p>
+                <button class="btn btn-success" style="padding: 1rem 2rem; font-size: 1.1rem;" onclick="window.location.href='courses.html'">
+                    <i class="fas fa-home"></i> Back to Home
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup Message -->
+    <div class="popup" id="popupMessage">
+        <i class="fas fa-check-circle" style="color: #10b981;"></i>
+        <span id="popupText">Task submitted successfully!</span>
+    </div>
+
+    <script>
+        const course = courseData;
+        let currentUser = null;
+        let currentChapter = 1;
+        let userProgress = null;
+
+        // Initialize
+        function init() {
+            // Check login
+            const storedUser = localStorage.getItem('currentUser');
+            if (!storedUser) {
+                alert('Please login first');
+                window.location.href = 'courses.html';
+                return;
+            }
+            
+            currentUser = JSON.parse(storedUser);
+            
+            // Check payment
+            if (currentUser.paymentStatus !== 'Paid') {
+                alert('Please complete payment to access the course');
+                window.location.href = 'courses.html';
+                return;
+            }
+            
+            loadUserProgress();
+        }
+
+        // Load user progress
+        function loadUserProgress() {
+            showLoading();
+            google.script.run
+                .withSuccessHandler(handleProgressResponse)
+                .withFailureHandler(showError)
+                .getUserProgress(currentUser.userId);
+        }
+
+        function handleProgressResponse(result) {
+            hideLoading();
+            if (result.success) {
+                userProgress = result;
+                currentChapter = result.user.currentChapter || 1;
+                updateSidebar();
+                loadChapter(currentChapter);
+                updateProgressDisplay();
+            } else {
+                showError(result.message);
+            }
+        }
+
+        // Update progress display
+        function updateProgressDisplay() {
+            if (!userProgress) return;
+            
+            const completed = userProgress.user.chaptersCompleted || 0;
+            const total = course.chapters.length;
+            const percentage = (completed / total) * 100;
+            
+            // Update progress circle
+            const circle = document.getElementById('progressCircle');
+            circle.style.background = `conic-gradient(#4f46e5 0% ${percentage}%, #e2e8f0 ${percentage}% 100%)`;
+            document.getElementById('progressPercent').textContent = `${Math.round(percentage)}%`;
+            
+            // Update counts
+            document.getElementById('completedCount').textContent = completed;
+            document.getElementById('tasksCount').textContent = completed;
+            
+            // Check if course completed
+            if (completed >= total) {
+                document.getElementById('completionSection').style.display = 'block';
+                document.getElementById('taskSection').style.display = 'none';
+                document.getElementById('chapterContent').style.display = 'none';
+            }
+        }
+
+        // Update sidebar
+        function updateSidebar() {
+            const chaptersList = document.getElementById('chaptersList');
+            chaptersList.innerHTML = '';
+            
+            const completedChapters = userProgress ? userProgress.user.chaptersCompleted || 0 : 0;
+            
+            course.chapters.forEach((chapter, index) => {
+                const chapterNumber = index + 1;
+                const isCompleted = chapterNumber <= completedChapters;
+                const isActive = chapterNumber === currentChapter;
+                
+                const chapterItem = document.createElement('div');
+                chapterItem.className = `chapter-item ${isCompleted ? 'completed' : ''} ${isActive ? 'active' : ''}`;
+                chapterItem.innerHTML = `
+                    <div class="chapter-number">${chapterNumber}</div>
+                    <div>
+                        <div style="font-weight: 500;">${chapter.title}</div>
+                        <div style="font-size: 0.9rem; color: #64748b;">
+                            ${isCompleted ? '✓ Completed' : 'Pending'}
+                        </div>
+                    </div>
+                `;
+                chapterItem.onclick = () => loadChapter(chapterNumber);
+                chaptersList.appendChild(chapterItem);
+            });
+        }
+
+        // Load chapter
+        function loadChapter(chapterNumber) {
+            if (chapterNumber > course.chapters.length) {
+                // Course completed
+                document.getElementById('completionSection').style.display = 'block';
+                document.getElementById('taskSection').style.display = 'none';
+                document.getElementById('chapterContent').style.display = 'none';
+                return;
+            }
+            
+            currentChapter = chapterNumber;
+            const chapter = course.chapters[chapterNumber - 1];
+            
+            // Update chapter content
+            document.getElementById('chapterContent').innerHTML = `
+                <div class="chapter-header">
+                    <h1 class="chapter-title">Chapter ${chapterNumber}: ${chapter.title}</h1>
+                    <p style="color: #64748b;">Complete the task below to move to next chapter</p>
+                </div>
+                <div class="chapter-content">
+                    ${chapter.content}
+                </div>
+            `;
+            
+            // Update task section
+            document.getElementById('taskTitle').textContent = chapter.task.title;
+            document.getElementById('taskDescription').textContent = chapter.task.description;
+            
+            // Show task section
+            document.getElementById('taskSection').style.display = 'block';
+            document.getElementById('completionSection').style.display = 'none';
+            
+            // Clear form
+            document.getElementById('solutionPlan').value = '';
+            document.getElementById('actualSolution').value = '';
+            
+            // Update sidebar
+            updateSidebar();
+        }
+
+        // Submit task
+        document.getElementById('taskForm').onsubmit = function(event) {
+            event.preventDefault();
+            
+            const solutionPlan = document.getElementById('solutionPlan').value;
+            const actualSolution = document.getElementById('actualSolution').value;
+            
+            if (!solutionPlan || !actualSolution) {
+                alert('Please fill in both fields');
+                return;
+            }
+            
+            const chapter = course.chapters[currentChapter - 1];
+            
+            showLoading();
+            google.script.run
+                .withSuccessHandler(handleTaskSubmission)
+                .withFailureHandler(showError)
+                .submitChapterTask(
+                    currentUser.userId,
+                    course.id,
+                    currentChapter,
+                    chapter.title,
+                    solutionPlan,
+                    actualSolution
+                );
+        };
+
+        function handleTaskSubmission(result) {
+            hideLoading();
+            if (result.success) {
+                // Update local user progress
+                if (!userProgress.user.chaptersCompleted) {
+                    userProgress.user.chaptersCompleted = 0;
+                }
+                userProgress.user.chaptersCompleted++;
+                userProgress.user.currentChapter = currentChapter + 1;
+                
+                // Update UI
+                updateProgressDisplay();
+                updateSidebar();
+                
+                // Show success message
+                document.getElementById('popupText').textContent = result.message;
+                document.getElementById('popupMessage').style.display = 'flex';
+                
+                // Load next chapter after delay
+                setTimeout(() => {
+                    document.getElementById('popupMessage').style.display = 'none';
+                    loadChapter(currentChapter + 1);
+                }, 2000);
+            } else {
+                showError(result.message);
+            }
+        }
+
+        // Skip chapter
+        function skipChapter() {
+            if (confirm('Are you sure you want to skip this chapter? You can come back later.')) {
+                loadChapter(currentChapter + 1);
+            }
+        }
+
+        // Show loading
+        function showLoading() {
+            document.getElementById('loading').style.display = 'flex';
+        }
+
+        // Hide loading
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        // Show error
+        function showError(error) {
+            hideLoading();
+            console.error('Error:', error);
+            alert('Error: ' + (error.message || error));
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>

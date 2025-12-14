@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SkillUpRise - Online Learning Platform</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --white: #ffffff;
+        }
+
+        body {
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: var(--white);
+            padding: 1rem 5%;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .logo-text span {
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--secondary), #059669);
+            color: white;
+        }
+
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent), #d97706);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.2);
+        }
+
+        /* User Dropdown */
+        .user-dropdown {
+            position: relative;
+            display: none;
+        }
+
+        .user-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 120%;
+            background: var(--white);
+            min-width: 200px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-radius: 12px;
+            padding: 0.8rem 0;
+            z-index: 1000;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 0.8rem 1.5rem;
+            color: var(--gray);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background: var(--light);
+            color: var(--primary);
+            padding-left: 2rem;
+        }
+
+        .user-dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 5%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            border-radius: 0 0 40px 40px;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+
+        /* Search Bar */
+        .search-container {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            padding-left: 3rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        /* Courses Section */
+        .courses-section {
+            padding: 0 5% 4rem;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            color: var(--dark);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 2px;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .course-card {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .course-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            position: relative;
+        }
+
+        .course-category {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .course-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .course-instructor {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-description {
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .course-meta {
+            display: flex;
+            gap: 1.5rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .course-price {
+            background: linear-gradient(135deg, var(--secondary), #059669);
+            color: white;
+            padding: 0.8rem;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .course-actions {
+            padding: 1.5rem;
+        }
+
+        /* My Courses Section */
+        .my-courses-section {
+            padding: 0 5% 4rem;
+            display: none;
+        }
+
+        .my-courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .my-course-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 4px solid var(--primary);
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .close-btn {
+            font-size: 1.8rem;
+            color: var(--gray);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        /* Messages */
+        .message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+            animation: slideInRight 0.3s ease;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .message-success {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .message-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid #ef4444;
+        }
+
+        .message-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border-left: 4px solid #3b82f6;
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.9);
+            z-index: 4000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #e2e8f0;
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #e2e8f0;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 5%;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Spinner -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="#" class="logo" onclick="loadHome()">
+            <div class="logo-icon">S</div>
+            <div class="logo-text">SkillUp<span>Rise</span></div>
+        </a>
+        
+        <div class="nav-links">
+            <a href="#" class="nav-link" onclick="loadHome()">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="#" class="nav-link" onclick="loadMyCourses()">
+                <i class="fas fa-book"></i> My Courses
+            </a>
+            
+            <div class="user-actions" id="userActions">
+                <button class="btn btn-secondary" onclick="showLoginModal()">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <button class="btn btn-primary" onclick="showSignupModal()">
+                    <i class="fas fa-user-plus"></i> Sign Up
+                </button>
+            </div>
+            
+            <div class="user-dropdown" id="userDropdown">
+                <div class="user-btn" id="userInitial">U</div>
+                <div class="dropdown-content">
+                    <a href="#" id="userEmail">user@example.com</a>
+                    <a href="#" onclick="loadMyCourses()">
+                        <i class="fas fa-book"></i> My Courses
+                    </a>
+                    <a href="#" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero" id="heroSection">
+        <h1>Learn Today, Lead Tomorrow</h1>
+        <p>Master in-demand skills with our expert-led courses. Start your learning journey today!</p>
+        
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-box" placeholder="Search courses by title, category, or instructor..." 
+                   id="searchInput" onkeyup="searchCourses()">
+        </div>
+    </div>
+
+    <!-- All Courses Section -->
+    <div class="courses-section" id="allCoursesSection">
+        <h2 class="section-title">Explore Courses</h2>
+        <div class="courses-grid" id="coursesGrid">
+            <!-- Courses will be loaded here -->
+        </div>
+    </div>
+
+    <!-- My Courses Section -->
+    <div class="my-courses-section" id="myCoursesSection">
+        <h2 class="section-title">My Courses</h2>
+        <div class="my-courses-grid" id="myCoursesGrid">
+            <!-- Purchased courses will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Welcome Back</h3>
+                <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
+            </div>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-control" required placeholder="you@example.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem;">
+                    <i class="fas fa-sign-in-alt"></i> Login to Account
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Join SkillUpRise</h3>
+                <span class="close-btn" onclick="closeModal('signupModal')">&times;</span>
+            </div>
+            <form id="signupForm" onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-control" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-control" required placeholder="you@example.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control" required placeholder="+91 98765 43210">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" required placeholder="••••••••" minlength="6">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem;">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Complete Enrollment</h3>
+                <span class="close-btn" onclick="closeModal('paymentModal')">&times;</span>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Course</label>
+                <input type="text" class="form-control" id="paymentCourse" readonly>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Amount</label>
+                <input type="text" class="form-control" id="paymentAmount" value="₹49" readonly>
+            </div>
+            <p style="color: var(--gray); margin-bottom: 1.5rem; text-align: center;">
+                Secure payment powered by Razorpay
+            </p>
+            <button class="btn btn-success" style="width: 100%; padding: 1rem;" onclick="initiatePayment()">
+                <i class="fas fa-lock"></i> Pay ₹49 & Enroll Now
+            </button>
+        </div>
+    </div>
+
+    <!-- Message Container -->
+    <div class="message" id="message"></div>
+
+    <footer>
+        <div class="footer-content">
+            <div>
+                <div class="logo" style="margin-bottom: 1rem;">
+                    <div class="logo-icon" style="width: 30px; height: 30px; font-size: 1rem;">S</div>
+                    <div class="logo-text" style="font-size: 1.2rem;">SkillUp<span>Rise</span></div>
+                </div>
+                <p style="color: #cbd5e1; max-width: 300px;">
+                    Empowering learners worldwide with quality education and skill development.
+                </p>
+            </div>
+            <div>
+                <p style="color: #cbd5e1;">&copy; 2024 SkillUpRise. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Configuration
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwg8obk8BF_5XMUAlMV3u6kAJmWuRpdMUfY0810p3SokqlwDk2cbmVFZ2YuSRVWvweSIw/exec';
+        const RAZORPAY_KEY = 'rzp_test_x5g5F1m5rGl4l6'; // Replace with your actual key
+
+        // State management
+        let currentUser = null;
+        let allCourses = [];
+        let selectedCourse = null;
+
+        // Initialize
+        async function init() {
+            showLoading();
+            
+            try {
+                // Test connection
+                const response = await fetch(GOOGLE_SCRIPT_URL + '?functionName=testConnection');
+                const result = await response.json();
+                
+                if (result.success) {
+                    console.log('Connected to Google Apps Script');
+                    
+                    // Check if user is logged in
+                    const storedUser = localStorage.getItem('currentUser');
+                    if (storedUser) {
+                        currentUser = JSON.parse(storedUser);
+                        updateUIForLoggedInUser();
+                    }
+                    
+                    // Load courses
+                    await loadAllCourses();
+                } else {
+                    showMessage('Failed to connect to server', 'error');
+                }
+            } catch (error) {
+                console.error('Initialization error:', error);
+                showMessage('Connection error. Please check your internet.', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Load all courses
+        async function loadAllCourses() {
+            showLoading();
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL + '?functionName=getAllCourses');
+                const result = await response.json();
+                
+                if (result.success) {
+                    allCourses = result.courses;
+                    displayCourses(result.courses);
+                } else {
+                    showMessage('Failed to load courses', 'error');
+                }
+            } catch (error) {
+                console.error('Load courses error:', error);
+                showMessage('Failed to load courses', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Display courses
+        function displayCourses(courses) {
+            const coursesGrid = document.getElementById('coursesGrid');
+            
+            if (courses.length === 0) {
+                coursesGrid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <i class="fas fa-book-open"></i>
+                        <h3>No courses found</h3>
+                        <p>Try searching for something else</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            coursesGrid.innerHTML = courses.map(course => `
+                <div class="course-card">
+                    <div class="course-header">
+                        <span class="course-category">${course.category}</span>
+                        <h3 class="course-title">${course.title}</h3>
+                        <p class="course-instructor">By ${course.instructor}</p>
+                        <p class="course-description">${course.description}</p>
+                        <div class="course-meta">
+                            <span><i class="far fa-clock"></i> ${course.duration}</span>
+                            <span><i class="fas fa-book"></i> ${course.chapters} chapters</span>
+                        </div>
+                    </div>
+                    <div class="course-price">₹${course.price}</div>
+                    <div class="course-actions">
+                        ${currentUser && currentUser.purchasedCourses && currentUser.purchasedCourses.includes(course.id) ? 
+                            `<button class="btn btn-success" style="width: 100%;" onclick="startCourse('${course.id}')">
+                                <i class="fas fa-play"></i> Start Learning
+                            </button>` :
+                            `<button class="btn btn-primary" style="width: 100%;" onclick="enrollCourse('${course.id}')">
+                                <i class="fas fa-shopping-cart"></i> Enroll Now
+                            </button>`
+                        }
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Search courses
+        async function searchCourses() {
+            const searchTerm = document.getElementById('searchInput').value.trim();
+            
+            if (searchTerm.length === 0) {
+                displayCourses(allCourses);
+                return;
+            }
+            
+            if (searchTerm.length < 2) return;
+            
+            showLoading();
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL + `?functionName=searchCourses&searchTerm=${encodeURIComponent(searchTerm)}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayCourses(result.courses);
+                }
+            } catch (error) {
+                console.error('Search error:', error);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Show login modal
+        function showLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        // Show signup modal
+        function showSignupModal() {
+            document.getElementById('signupModal').style.display = 'flex';
+        }
+
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Handle login
+        async function handleLogin(event) {
+            event.preventDefault();
+            const form = event.target;
+            const email = form.querySelector('input[type="email"]').value;
+            const password = form.querySelector('input[type="password"]').value;
+            
+            if (!email || !password) {
+                showMessage('Please fill in all fields', 'error');
+                return;
+            }
+            
+            showLoading();
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        functionName: 'loginUser',
+                        data: { email, password }
+                    })
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                    currentUser = result.userData;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    updateUIForLoggedInUser();
+                    closeModal('loginModal');
+                    showMessage('Login successful! Welcome back.', 'success');
+                    await loadAllCourses(); // Reload courses to update enrollment status
+                } else {
+                    showMessage(result.message, 'error');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showMessage('Login failed. Please try again.', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Handle signup
+        async function handleSignup(event) {
+            event.preventDefault();
+            const form = event.target;
+            const name = form.querySelector('input[type="text"]').value;
+            const email = form.querySelector('input[type="email"]').value;
+            const phone = form.querySelector('input[type="tel"]').value;
+            const password = form.querySelector('input[type="password"]').value;
+            
+            if (!name || !email || !phone || !password) {
+                showMessage('Please fill in all fields', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showMessage('Password must be at least 6 characters', 'error');
+                return;
+            }
+            
+            showLoading();
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        functionName: 'signUpUser',
+                        data: { email, password, name, phone }
+                    })
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                    currentUser = result.userData;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    updateUIForLoggedInUser();
+                    closeModal('signupModal');
+                    showMessage('Account created successfully!', 'success');
+                    await loadAllCourses();
+                } else {
+                    showMessage(result.message, 'error');
+                }
+            } catch (error) {
+                console.error('Signup error:', error);
+                showMessage('Signup failed. Please try again.', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Update UI for logged in user
+        function updateUIForLoggedInUser() {
+            document.getElementById('userActions').style.display = 'none';
+            document.getElementById('userDropdown').style.display = 'block';
+            document.getElementById('userEmail').textContent = currentUser.email;
+            document.getElementById('userInitial').textContent = currentUser.name.charAt(0).toUpperCase();
+        }
+
+        // Enroll in course
+        function enrollCourse(courseId) {
+            if (!currentUser) {
+                showLoginModal();
+                return;
+            }
+            
+            const course = allCourses.find(c => c.id === courseId);
+            if (!course) return;
+            
+            selectedCourse = course;
+            document.getElementById('paymentCourse').value = course.title;
+            document.getElementById('paymentModal').style.display = 'flex';
+        }
+
+        // Initiate payment
+        async function initiatePayment() {
+            if (!currentUser || !selectedCourse) return;
+            
+            showLoading();
+            try {
+                // Create order in backend
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        functionName: 'createPaymentOrder',
+                        data: {
+                            userId: currentUser.userId,
+                            courseId: selectedCourse.id,
+                            courseTitle: selectedCourse.title
+                        }
+                    })
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Initialize Razorpay
+                    const options = {
+                        key: RAZORPAY_KEY,
+                        amount: result.order.amount,
+                        currency: result.order.currency,
+                        name: 'SkillUpRise',
+                        description: selectedCourse.title,
+                        order_id: result.order.order_id,
+                        handler: async function(response) {
+                            await verifyPayment(response);
+                        },
+                        prefill: {
+                            name: currentUser.name,
+                            email: currentUser.email,
+                            contact: currentUser.phone
+                        },
+                        theme: {
+                            color: '#4f46e5'
+                        }
+                    };
+                    
+                    const rzp = new Razorpay(options);
+                    rzp.open();
+                } else {
+                    showMessage(result.message, 'error');
+                }
+            } catch (error) {
+                console.error('Payment error:', error);
+                showMessage('Payment initialization failed', 'error');
+            } finally {
+                hideLoading();
+                closeModal('paymentModal');
+            }
+        }
+
+        // Verify payment
+        async function verifyPayment(paymentResponse) {
+            showLoading();
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        functionName: 'verifyPayment',
+                        data: paymentResponse
+                    })
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Update local user data
+                    if (!currentUser.purchasedCourses) {
+                        currentUser.purchasedCourses = [];
+                    }
+                    if (!currentUser.purchasedCourses.includes(selectedCourse.id)) {
+                        currentUser.purchasedCourses.push(selectedCourse.id);
+                    }
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    
+                    showMessage('Payment successful! Course enrolled.', 'success');
+                    setTimeout(() => {
+                        loadAllCourses();
+                    }, 1000);
+                } else {
+                    showMessage(result.message, 'error');
+                }
+            } catch (error) {
+                console.error('Verification error:', error);
+                showMessage('Payment verification failed', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Start course
+        function startCourse(courseId) {
+            // Redirect to course details page
+            window.location.href = `coursedetails.html?course=${courseId}`;
+        }
+
+        // Load home
+        function loadHome() {
+            document.getElementById('allCoursesSection').style.display = 'block';
+            document.getElementById('myCoursesSection').style.display = 'none';
+            document.getElementById('heroSection').style.display = 'block';
+        }
+
+        // Load my courses
+        async function loadMyCourses() {
+            if (!currentUser) {
+                showLoginModal();
+                return;
+            }
+            
+            document.getElementById('allCoursesSection').style.display = 'none';
+            document.getElementById('myCoursesSection').style.display = 'block';
+            document.getElementById('heroSection').style.display = 'none';
+            
+            showLoading();
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        functionName: 'getUserPurchasedCourses',
+                        data: { userId: currentUser.userId }
+                    })
+                });
+                const result = await response.json();
+                
+                const myCoursesGrid = document.getElementById('myCoursesGrid');
+                
+                if (result.success && result.courses.length > 0) {
+                    myCoursesGrid.innerHTML = result.courses.map(course => `
+                        <div class="my-course-card">
+                            <h3 style="margin-bottom: 0.5rem; color: var(--dark);">${course.title}</h3>
+                            <p style="color: var(--gray); margin-bottom: 1rem; font-size: 0.95rem;">
+                                ${course.description}
+                            </p>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="color: var(--primary); font-weight: 600;">
+                                    ${course.progress}
+                                </span>
+                                <button class="btn btn-primary" onclick="startCourse('${course.id}')">
+                                    <i class="fas fa-play"></i> Continue
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    myCoursesGrid.innerHTML = `
+                        <div class="empty-state" style="grid-column: 1/-1;">
+                            <i class="fas fa-book"></i>
+                            <h3>No courses yet</h3>
+                            <p>Enroll in a course to start learning</p>
+                            <button class="btn btn-primary" onclick="loadHome()" style="margin-top: 1rem;">
+                                <i class="fas fa-shopping-cart"></i> Browse Courses
+                            </button>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Load my courses error:', error);
+                showMessage('Failed to load your courses', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Logout
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            document.getElementById('userActions').style.display = 'flex';
+            document.getElementById('userDropdown').style.display = 'none';
+            loadHome();
+            showMessage('Logged out successfully', 'success');
+        }
+
+        // Show message
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.className = `message message-${type}`;
+            messageDiv.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${text}</span>
+            `;
+            messageDiv.style.display = 'flex';
+            
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Show loading
+        function showLoading() {
+            document.getElementById('loading').style.display = 'flex';
+        }
+
+        // Hide loading
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modals = ['loginModal', 'signupModal', 'paymentModal'];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
